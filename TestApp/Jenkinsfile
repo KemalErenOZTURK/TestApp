@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t aspnet .'
+                sh 'docker build -t TestApp .'
             }
         }
         stage('Run Docker Container') {
             steps {
-                sh 'docker run 5000:80 --name c_aspnet aspnet'
+                sh 'docker run 5000:80 --name c_aspnet TestApp'
             }
         }
     }
