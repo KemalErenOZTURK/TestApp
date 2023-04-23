@@ -62,5 +62,9 @@ namespace TestApp.Controllers
             var data = await _context.Companies.ToListAsync();
             return Json(data);
         }
+        public async Task<ActionResult> Test2()
+        {
+            return Json("ah be üstat");
+        }
     }
 }
