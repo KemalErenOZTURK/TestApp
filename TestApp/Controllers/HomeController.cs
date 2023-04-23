@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
+using TestApp.EntityModels;
 
 namespace TestApp.Controllers
 {
     public class HomeController : Controller
     {
         private IHttpContextAccessor _httpContextAccessor;
+        private sqldbContext _context;
 
-        public HomeController(IHttpContextAccessor httpContextAccessor)
+        public HomeController(IHttpContextAccessor httpContextAccessor, sqldbContext sqldbContext)
         {
             _httpContextAccessor = httpContextAccessor;
+            _context = sqldbContext;
         }
         public IActionResult Index()
         {
@@ -52,6 +56,11 @@ namespace TestApp.Controllers
             //    }
             //}
             return Json(ip);
+        }
+        public async Task<ActionResult> Test()
+        {
+            var data = await _context.Companies.ToListAsync();
+            return Json(data);
         }
     }
 }
