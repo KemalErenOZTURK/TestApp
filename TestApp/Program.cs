@@ -18,7 +18,7 @@ string password = File.ReadAllText(passFile);
 builder.Services.AddDbContext<sqldbContext>(options => options.UseSqlServer(defaultConnection + ";Password=" + password));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
-builder.Services.AddStackExchangeRedisCache(opt => opt.Configuration = "localhost:6379");
+builder.Services.AddStackExchangeRedisCache(opt => opt.Configuration = "s_redis:6379");
 
 var app = builder.Build();
 
