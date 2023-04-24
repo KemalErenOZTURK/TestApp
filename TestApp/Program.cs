@@ -6,31 +6,19 @@ using TestApp.EntityModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var configuration = new ConfigurationBuilder().AddKeyPerFile(directoryPath: "/run/secrets", optional: true)
-//    .Build();
-
-//var connectionString = configuration.GetConnectionString("DefaultConnection");
-//var passwordFilePath = configuration.GetValue<string>("ConnectionStrings:PasswordFile");
-////string password = File.ReadAllText(passwordFilePath);
-//Console.WriteLine("DC: "+connectionString);
-//Console.WriteLine("PF: "+passwordFilePath);
 
 var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables().Build();
 
 var defaultConnection = configuration.GetSection("ConnectionStrings")["DefaultConnection"];
-Console.WriteLine("DF: " + defaultConnection);
-
 var passFile = configuration.GetSection("ConnectionStrings")["PasswordFile"];
-var asdad = "/run/secrets/sec_db_pass";
 string password = File.ReadAllText(passFile);
-Console.WriteLine("Password: " + password);
-
 
 // Add services to the container.
-builder.Services.AddDbContext<sqldbContext>(options =>options.UseSqlServer(defaultConnection + ";Password="+ password));
+builder.Services.AddDbContext<sqldbContext>(options => options.UseSqlServer(defaultConnection + ";Password=" + password));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
+builder.Services.AddStackExchangeRedisCache(opt => opt.Configuration = "localhost:6379");
 
 var app = builder.Build();
 

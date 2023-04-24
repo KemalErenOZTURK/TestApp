@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Net;
 using TestApp.EntityModels;
 
@@ -10,11 +11,13 @@ namespace TestApp.Controllers
     {
         private IHttpContextAccessor _httpContextAccessor;
         private sqldbContext _context;
+        private IDistributedCache _cache;
 
-        public HomeController(IHttpContextAccessor httpContextAccessor, sqldbContext sqldbContext)
+        public HomeController(IHttpContextAccessor httpContextAccessor, sqldbContext sqldbContext, IDistributedCache distributedCache)
         {
             _httpContextAccessor = httpContextAccessor;
             _context = sqldbContext;
+            _cache = distributedCache;
         }
         public IActionResult Index()
         {
@@ -77,6 +80,15 @@ namespace TestApp.Controllers
         {
 
             return Json("ilk fırsatta sana gelmek istedim");
+        }
+
+        public async Task<ActionResult> Redis()
+        {
+            await _cache.SetStringAsync("name","aliveli", options:new DistributedCacheEntryOptions
+            { 
+                SlidingExpiration = TimeSpan.FromSeconds(50)
+            });
+            return Json(await _cache.GetStringAsync("name"));
         }
     }
 }
