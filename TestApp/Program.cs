@@ -15,6 +15,10 @@ var passwordFilePath = configuration.GetValue<string>("ConnectionStrings:Passwor
 Console.WriteLine("DC: "+connectionString);
 Console.WriteLine("PF: "+passwordFilePath);
 
+var asdad = "/run/secrets/sec_db_pass";
+string password = File.ReadAllText(asdad);
+Console.WriteLine("Password: " + password);
+
 
 // Add services to the container.
 builder.Services.AddDbContext<sqldbContext>(options =>options.UseSqlServer(connectionString+";Password="+passwordFilePath));
