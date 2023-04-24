@@ -12,8 +12,8 @@ var configuration = new ConfigurationBuilder().AddKeyPerFile(directoryPath: "/ru
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 var passwordFilePath = configuration.GetValue<string>("ConnectionStrings:PasswordFile");
 //string password = File.ReadAllText(passwordFilePath);
-Console.WriteLine(connectionString);
-Console.WriteLine(passwordFilePath);
+Console.WriteLine("DC: "+connectionString);
+Console.WriteLine("PF: "+passwordFilePath);
 
 
 // Add services to the container.
