@@ -72,5 +72,11 @@ namespace TestApp.Controllers
 
             return Json("bu gece karakolluk olabilirim");
         }
+
+        public async Task<ActionResult> Test4()
+        {
+
+            return Json("ilk fırsatta sana gelmek istedim");
+        }
     }
 }
