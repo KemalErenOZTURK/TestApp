@@ -4,8 +4,15 @@ using TestApp.EntityModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .Build();
+
+var connectionString = configuration.GetConnectionString("DefaultConnection");
+var passwordFilePath = configuration.GetValue<string>("ConnectionStrings:PasswordFile");
+
 // Add services to the container.
-builder.Services.AddDbContext<sqldbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<sqldbContext>(options =>options.UseSqlServer(connectionString+";"+passwordFilePath));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 
