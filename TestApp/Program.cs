@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 using TestApp.EntityModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+var configuration = new ConfigurationBuilder().AddKeyPerFile(directoryPath: "/run/secrets", optional: true)
     .Build();
 
 var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -13,6 +14,7 @@ var passwordFilePath = configuration.GetValue<string>("ConnectionStrings:Passwor
 string password = File.ReadAllText(passwordFilePath);
 Console.WriteLine(connectionString);
 Console.WriteLine(password);
+
 
 // Add services to the container.
 builder.Services.AddDbContext<sqldbContext>(options =>options.UseSqlServer(connectionString+";Password="+passwordFilePath));
