@@ -14,11 +14,12 @@ var defaultConnection = configuration.GetSection("ConnectionStrings")["DefaultCo
 var passFile = configuration.GetSection("ConnectionStrings")["PasswordFile"];
 string password = File.ReadAllText(passFile);
 
+var redisConfig = configuration["RedisConfig"];
 // Add services to the container.
 builder.Services.AddDbContext<sqldbContext>(options => options.UseSqlServer(defaultConnection + ";Password=" + password));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
-builder.Services.AddStackExchangeRedisCache(opt => opt.Configuration = "s_redis:6379");
+builder.Services.AddStackExchangeRedisCache(opt => opt.Configuration = redisConfig);
 
 var app = builder.Build();
 
