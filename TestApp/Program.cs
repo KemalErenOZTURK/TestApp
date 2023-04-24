@@ -10,6 +10,8 @@ var configuration = new ConfigurationBuilder()
 
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 var passwordFilePath = configuration.GetValue<string>("ConnectionStrings:PasswordFile");
+Console.WriteLine(connectionString);
+Console.WriteLine(passwordFilePath);
 
 // Add services to the container.
 builder.Services.AddDbContext<sqldbContext>(options =>options.UseSqlServer(connectionString+";"+passwordFilePath));
